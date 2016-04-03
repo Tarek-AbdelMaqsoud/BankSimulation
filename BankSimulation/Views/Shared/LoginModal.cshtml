@@ -1,0 +1,27 @@
+﻿@model Model.User
+
+<link href="~/Content/LoginForm.css" rel="stylesheet" />
+<link href="~/Content/MontserratFont.css" rel="stylesheet" type='text/css'>
+<div class="login-block">
+    <h1>Login</h1>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div style="color:red">@ViewBag.ErrorMessage</div>
+    }
+    @using (Html.BeginForm("Login", "Users", FormMethod.Post))
+    {
+        <div>
+            @Html.TextBoxFor(m => m.Email, new { @placeholder = "Email", @id = "Email" })
+        </div>
+
+        <div>
+            @Html.PasswordFor(m => m.Password, new { @placeholder = "Password", @id = "password" })
+        </div>
+        <br />
+        <div>
+            <button type="submit">Login</button>
+            <p class="text--center">Not a member? <a href="@Url.Action("Register","Users")">Sign up now</a> <span class="fontawesome-arrow-right"></span></p>
+        </div>
+    }
+
+</div>

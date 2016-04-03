@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Tellers";
+}
+
+
+<div class="container">
+
+    <h2>Our Bank Simulation <strong>Tellers</strong></h2>
+
+    <div class="row">
+
+        <ul class="team-list sort-destination isotope" data-sort-id="team" style="position: relative; overflow: hidden; height: 898px;">
+            @foreach (var user in ViewBag.Tellers)
+            {
+
+                <li class="span3 isotope-item leadership">
+                    <div class="team-item thumbnail">
+                        <a href="#" class="thumb-info team">
+                            <img alt="" src="/Images/team-1.jpg">
+                            <span class="thumb-info-title">
+                                <span class="thumb-info-inner">@user.FirstName @user.LastName</span>
+                                <span class="thumb-info-type" style="background-color:green;" id="Available_Teller_@user.UsersId">Available</span>
+                            </span>
+                        </a>
+                        <span class="thumb-info-caption">
+                            <p style="height: 60px;" id="Teller_Status_Description_@user.UsersId">I am available now.</p>
+                        </span>
+                    </div>
+                </li>
+            }
+        </ul>
+
+    </div>
+
+</div>
+

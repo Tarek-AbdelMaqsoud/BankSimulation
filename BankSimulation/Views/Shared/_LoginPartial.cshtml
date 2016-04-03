@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNet.Identity
+
+
+<style>
+    .loginbuttons {
+        display: inline-block;
+    }
+
+    .BodyLink:visited {
+        color: white !important;
+    }
+
+    .BodyLink:hover {
+        color: black !important;
+    }
+
+    .username {
+        font-size: 0.7vw !important;
+    }
+</style>
+<style>
+    .notification-container {
+        position: relative;
+        width: 16px;
+        height: 16px;
+        top: 15px;
+        left: 15px;
+    }
+
+        .notification-container i {
+            color: #fff;
+        }
+
+    .notification-counter {
+        position: absolute;
+        top: -2px;
+        left: 12px;
+        background-color: #d4130d;
+        color: #fff;
+        border-radius: 3px;
+        padding: 1px 3px;
+        font: 8px Verdana;
+    }
+</style>
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "Users", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div style="float:right; display:inline-block">
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown show animated fadeIn notification-container" style="margin-top:15%; left:0" onclick="MarkNotificationAsRead();">
+                    <i class="fa fa-bell-o" data-toggle="dropdown"></i>
+                    <span class="notification-counter" data-toggle="dropdown" id="notificationCount" style="display:none"></span>
+                    <ul class="dropdown-menu" style="color:white" id="notificationList"></ul>
+                </li>
+                <li id="profile-menu" class="dropdown show animated fadeIn">
+                    <a href="#" data-toggle="dropdown"> <span class="username">@User.Identity.Name</span> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="account">
+                            <div class="avatar" style="width:25% !important">
+
+                                <img ng-hide="dragover" id="userPortrait" ng-if="portrait.bigPortrait" ng-src="@Session["UserPhoto"]" class="avatar avatar-lg m-0-left ng-scope" drop-box"="" src="@Session["UserPhoto"]" />
+                            </div>
+                            <p style="color:white;"><b>@User.Identity.GetUserName()</b></p>
+                            <p><a href="@Url.Action("Profile", "Users")">Profile</a> | <a href="javascript:document.getElementById('logoutForm').submit()" id="sign-out">Sign out</a></p>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    }
+}
+else
+{
+    <div style="float:right; display:inline-block; margin-top:30px">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="loginbuttons">
+                <a class="btn btn-default-o onPageNav BodyLink" style="padding-top:5px; padding-bottom:5px; color:white;" onclick="ShowModal()">Login</a>
+            </li>
+            <li><p>&nbsp;&nbsp;&nbsp;</p></li>
+            <li class="loginbuttons">@Html.ActionLink("Register", "Register", "Users", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-default-o onPageNav BodyLink", @style = "padding-top:5px; padding-bottom:5px; color:white;" })</li>
+        </ul>
+    </div>
+}
+
+<div id="LoginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:hidden;">
+    <div class="modal-dialog" style="width: 320px !important">
+        <div class="modal-content" style="width: 320px !important">
+            @Html.Partial(partialViewName: "LoginModal", model: new Model.User())
+        </div>
+    </div>
+</div><!--/modal-->
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+    function ShowModal() {
+        $('#LoginModal').modal('show');
+    }
+</script>

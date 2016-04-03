@@ -1,0 +1,188 @@
+﻿<title>@ViewBag.Title</title>
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/scripts/jquery.signalR-2.2.0.js"></script>
+    <script src="~/SignalR/hubs"></script>
+
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <title>Team | Porto - Responsive HTML5 Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Porto - Responsive HTML5 Template">
+    <meta name="author" content="Crivos.com">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+    <!-- Libs CSS -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/flexslider.css" rel="stylesheet" />
+    <link href="~/Content/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Content/jquery.isotope.css" rel="stylesheet" />
+
+    <!-- Theme CSS -->
+    <link href="~/Content/theme.css" rel="stylesheet" />
+    <link href="~/Content/theme-elements.css" rel="stylesheet" />
+    <link href="~/Content/theme-animate.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="~/Content/custom.css" rel="stylesheet" />
+
+    <!-- Skin CSS -->
+    <link href="~/Content/blue.css" rel="stylesheet" />
+
+    <!-- Responsive CSS -->
+    <link href="~/Content/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="~/Content/theme-responsive.css" rel="stylesheet" />
+
+</head>
+<body class="sticky-menu-active" style="zoom: 1; padding-top: 107px;">
+
+    <div class="body">
+        <header>
+            <div class="container">
+                <h1 class="logo">
+                    <a href="index.html">
+                        <img alt="Porto" src="~/Images/logo.png" style="height: 50px; width: 137px; display: inline-block;">
+                    </a>
+                </h1>
+                <nav>
+                    <ul class="nav nav-pills nav-top">
+                        <li>
+                            <a href="http://www.tpay.me/#what-is-tpay"><i class="icon-angle-right"></i>About Us</a>
+                        </li>
+                        <li>
+                            <a href="http://www.tpay.me/#contact-us"><i class="icon-angle-right"></i>Contact Us</a>
+                        </li>
+                        <li class="phone">
+                            <span><i class="icon-phone"></i>(002)-0227681892</span>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="social-icons">
+                   
+                </div>
+                <nav>
+                    <ul class="nav nav-pills nav-main" id="mainMenu">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" href="@Url.Action("Index","Home")">
+                                Home
+                                <i class="icon-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index","Home")">Queuing</a></li>
+                                <li><a href="@Url.Action("Tellers","Users")">Tellers</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="http://www.tpay.me/#what-is-tpay">About Us</a>
+                        </li>
+                        <li>
+                            <a href="http://www.tpay.me/#contact-us">Contact Us</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div role="main" class="main">
+            @RenderBody()
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+            <script src="~/SignalR/hubs"></script>
+
+            @RenderSection("scripts", required: false)
+        </div>
+    </div>
+</body>
+
+<script src="~/Scripts/jquery.flexslider.js"></script>
+<script src="~/Scripts/jquery.simple-text-rotator.js"></script>
+<script src="~/Scripts/jquery.mb.YTPlayer.min.js"></script>
+<script src="~/Scripts/jquery.magnific-popup.js"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+        (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+    });
+</script>
+
+<script src="~/Scripts/bootstrap.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+
+        var notification = $.connection.notificationHub;
+
+        // Client side method for receiving the list of notifications on the connected event from the server
+        notification.client.refreshNotification = function (data) {
+            if (data.length == 0 || data == null) {
+                //Do nothing
+            }
+            else {
+                if (data.length > 1) 
+                    $(data).each(function (i, obj) {
+                        if (!obj.IsRemoved) {
+                            if (obj.TellerID) {
+                                var userID = obj.TellerID;
+                                $("#Available_Teller_" + userID).text("Not Available");
+                                $("#Teller_Status_Description_" + userID).text("I am Currently handling Customer: " + obj.User.FirstName + " " + obj.User.LastName);
+                                $("#Available_Teller_" + userID).css("background-color", "#E41B17");
+                            }
+                        }
+                        else {
+                            if (obj.TellerID) {
+                                var userID = obj.TellerID;
+                                $("#Available_Teller_" + userID).text("Available");
+                                $("#Teller_Status_Description_" + userID).text("I am available now.");
+                                $("#Available_Teller_" + userID).css("background-color", "green");
+                            }
+                        }
+                    });
+            }
+        }
+        
+        //Client side method
+        notification.client.addLatestNotification = function (data) {
+                $(data).each(function (i, obj) {
+                    if (!obj.IsRemoved) {
+                        if (obj.TellerID) {
+                            var userID = obj.TellerID;
+                            $("#Available_Teller_" + userID).text("Not Available");
+                            $("#Teller_Status_Description_" + userID).text("I am Currently handling Customer: " + obj.User.FirstName + " " + obj.User.LastName);
+                            $("#Available_Teller_" + userID).css("background-color", "#E41B17");
+                        }
+                    }
+                    else {
+                        if (obj.TellerID) {
+                            var userID = obj.TellerID;
+                            $("#Available_Teller_" + userID).text("Available");
+                            $("#Teller_Status_Description_" + userID).text("I am available now.");
+                            $("#Available_Teller_" + userID).css("background-color", "green");
+                        }
+                    }
+                });
+            
+        }
+
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+        });
+    });
+</script>

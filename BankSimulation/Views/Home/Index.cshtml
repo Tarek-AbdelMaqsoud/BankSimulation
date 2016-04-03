@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-md-3">
+    <h4>
+        <span class="unselected-title">Available Customers</span>
+        <small>
+            - showing
+            <span class="unselected-count">@ViewBag.Customers.Count</span>
+        </small>
+    </h4>
+    @using (Html.BeginForm("AddCustomerToTheQueue", "Users", FormMethod.Post))
+    {
+        <select class="unselected form-control" style="height: 200px; width: 100%;" multiple="" name="customers">
+            @foreach (var user in ViewBag.Customers)
+        {
+        <option value="@user.UsersId">@user.FirstName @user.LastName</option>
+        }
+        </select>
+        <button type="submit" class="btn btn-primary" style="margin-top: 5px; width: 100%; max-width: 280px;">Add Customers To the queue</button>
+    }
+</div>
+
+<div class="col-md-3">
+    <h4>
+        <span class="unselected-title">Customers in Queue</span>
+        <small>
+            - showing
+            <span class="unselected-count">@ViewBag.QueuedUsers.Count</span>
+        </small>
+    </h4>
+
+    <select class="unselected form-control" style="height: 200px; width: 100%;" multiple="" name="tellers">
+        @foreach (var user in ViewBag.QueuedUsers)
+        {
+            <option value="@user.UsersId" id="QueuedUser_@user.UsersId">@user.FirstName @user.LastName</option>
+        }
+    </select>
+</div>
+    
